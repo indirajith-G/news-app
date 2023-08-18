@@ -1,31 +1,43 @@
-// src/Navbar.js
-import React, { useState } from 'react';
-import './Navbar.css';
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
-function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleNav = () => {
-    setIsOpen(!isOpen);
-  };
+function NavScrollExample({ onCountryChange }) {
+    const handleCountryButtonClick = (newCountry) => {
+        onCountryChange(newCountry);
+      };
 
   return (
-    <nav className={`navbar ${isOpen ? 'open' : ''}`}>
-      <div className="nav-toggle" onClick={toggleNav}>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-      </div>
-      <ul className="nav-list">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">World</a></li>
-        <li><a href="#">Politics</a></li>
-        <li><a href="#">Business</a></li>
-        <li><a href="#">Technology</a></li>
-        <li><a href="#">Science</a></li>
-      </ul>
-    </nav>
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container fluid>
+        <Navbar.Brand href="#">News App</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+            <Nav.Link >Top Headlines</Nav.Link>
+            <NavDropdown title="Country" id="navbarScrollingDropdown">
+              <NavDropdown.Item onClick={() => handleCountryButtonClick('us')}>US</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleCountryButtonClick('in')}>India</NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link>Sports</Nav.Link>
+          </Nav>
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+            />
+            <Button variant="outline-success">Search</Button>
+          </Form>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 
-export default Navbar;
+export default NavScrollExample;
