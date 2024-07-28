@@ -1,4 +1,3 @@
-// Navbar.js
 
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -7,29 +6,29 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-
 import './Navbar.css'; // Import your CSS file with styles
 
-function NavScrollExample({ onCountryChange, onEndpointChange }) {
+function NavScrollExample({ onCountryChange, onCategoryChange }) {
   const [selectedCountry, setSelectedCountry] = useState('in'); // Default selected country is 'in'
-  const [selectedEndpoint, setSelectedEndpoint] = useState(''); // Default endpoint
+  const [selectedCategory, setSelectedCategory] = useState('sports'); // Default Category
 
   const handleCountryButtonClick = (newCountry) => {
     setSelectedCountry(newCountry);
     onCountryChange(newCountry);
   };
 
-  const handleEndpointButtonClick = (newEndpoint) => {
-    onEndpointChange(newEndpoint);
+  const handleCategoryButtonClick = (newCategory) => {
+    setSelectedCategory(newCategory)
+    onCategoryChange(newCategory);
   };
 
   return (
     <Navbar expand="lg" className="navbar">
       <Container fluid>
-        <Navbar.Brand href="#">News App</Navbar.Brand>
+        <Navbar.Brand href="">News App</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+          <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px'}} navbarScroll>
             <NavDropdown title="Country" id="navbarScrollingDropdown">
               <NavDropdown.Item
                 onClick={() => handleCountryButtonClick('in')}
@@ -43,23 +42,21 @@ function NavScrollExample({ onCountryChange, onEndpointChange }) {
               >
                 US
               </NavDropdown.Item>
-              {/* Add more country items */}
             </NavDropdown>
 
             <NavDropdown title="Category" id="navbarScrollingDropdown">
               <NavDropdown.Item
-                onClick={() => handleEndpointButtonClick('top-headlines')}
-                className={selectedEndpoint === 'top-headlines' ? 'selected-endpoint' : 'unselected-endpoint'}
-              >
-                Top-headlines
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                onClick={() => handleEndpointButtonClick('business')}
-                className={selectedEndpoint === 'business' ? 'selected-endpoint' : 'unselected-endpoint'}
+                onClick={() => handleCategoryButtonClick('business')}
+                className={selectedCategory === 'business' ? 'selected-Category' : 'unselected-Category'}
               >
                 Business
               </NavDropdown.Item>
-              {/* Add more country items */}
+              <NavDropdown.Item
+                onClick={() => handleCategoryButtonClick('sports')}
+                className={selectedCategory === 'sports' ? 'selected-Category' : 'unselected-Category'}
+              >
+                Sports
+              </NavDropdown.Item>
             </NavDropdown>
 
 

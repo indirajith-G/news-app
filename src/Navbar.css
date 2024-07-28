@@ -1,15 +1,10 @@
-.navbar{
-  background: black ;
-}
-
 .nav-link{
-  color:white !important;
-  font-weight: 500 !important;
+  color:black !important;
   font-size: 18px !important;
 }
 
 /* Styling for selected country */
-.selected-country {
+.selected-country, .selected-Category {
   color: green(115, 35, 194) !important;
   font-size: 20px;
   font-weight: bold !important;
@@ -18,9 +13,10 @@
 }
 
 /* Styling for unselected country */
-.unselected-country {
+.unselected-country, .unselected-Category {
   color: orange !important;
   font-size: 16px;
   font-weight: 500 !important;
   background-color: transparent;
 }
+

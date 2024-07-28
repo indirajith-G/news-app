@@ -1,35 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
+import './NewsComponent.css'; 
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
-function NewsComponent({ selectedCountry, selectedEndpoint }) {
+function NewsComponent({ selectedCountry,selectedCategory}) {
   const [news, setNews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  // console.log('selected country is', selectedCountry)
+  // console.log('selected category is', selectedCategory)
   const newsContainerRef = useRef(null);
-
-  useEffect(() => {
-    fetchNews();
-  }, [currentPage, selectedCountry, selectedEndpoint]);
-
-  const fetchNews = async () => {
+  const fetchNews = useCallback(async () => {
     try {
-      let endpoint = selectedEndpoint; // Default endpoint
       let params = {
-        apiKey: '733dd6a23cd246238ca1788a0112f088',
         page: currentPage,
-        pageSize: 5
+        pageSize: 12
       };
-
-      if (selectedEndpoint === 'sports') {
-        endpoint = 'everything';
-        params.q = 'sports';
-      } else if (selectedEndpoint === 'sources') {
-        endpoint = 'top-headlines/sources';
-      } else if (selectedEndpoint === 'country') {
-        params.country = selectedCountry;
-      }
-
-      const response = await axios.get(`https://newsapi.org/v2/${endpoint}`, {
-        params: params
+  
+      const response = await axios.get(`https://newsapi.org/v2/top-headlines?&country=${selectedCountry}&category=${selectedCategory}&apiKey=733dd6a23cd246238ca1788a0112f088`, {
+        params: params,
       });
 
       const filteredNews = response.data.articles
@@ -44,7 +33,11 @@ function NewsComponent({ selectedCountry, selectedEndpoint }) {
     } catch (error) {
       console.error('Error fetching news:', error);
     }
-  };
+  }, [currentPage, selectedCountry, selectedCategory]);
+
+  useEffect(() => {
+    fetchNews();
+  }, [fetchNews]);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -57,22 +50,28 @@ function NewsComponent({ selectedCountry, selectedEndpoint }) {
   };
 
   return (
-    <div>
-      <div ref={newsContainerRef} style={{ maxHeight: '500px', overflow: 'auto' }}>
+<div>
+      <div className='float-layout' ref={newsContainerRef} >
         {news.map(article => (
           <div key={article.id}>
-            <img src={article.urlToImage} alt="Article Thumbnail" />
-            <h2>{article.title}</h2>
-            <p>{article.description}</p>
-            <button onClick={() => window.location.href = article.url}>Read More</button>
+            <Card style={{ width: '25rem', height:'600px',marginBottom: '1rem'}}>
+              <Card.Img style={{ width: '25rem', height:'300px'}}variant="top" src={article.urlToImage} alt="Article Thumbnail" />
+              <Card.Body>
+                <Card.Title>{article.title} </Card.Title>
+                <Card.Text>{article.description} </Card.Text>
+                <Button variant="outline-primary" onClick={() => window.location.href = article.url}>Read More</Button>
+              </Card.Body>
+            </Card>      
           </div>
         ))}
       </div>
-      <div>
+
+      <div className='buttons-container'>
         <button onClick={handlePreviousPage}>Previous Page</button>
         <button onClick={handleNextPage}>Next Page</button>
       </div>
-    </div>
+
+</div>
   );
 }
 
