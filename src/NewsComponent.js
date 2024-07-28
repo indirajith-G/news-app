@@ -1,30 +1,43 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import NavScrollExample from './Navbar';
-function NewsComponent({ selectedCountry }) {
+
+function NewsComponent({ selectedCountry, selectedEndpoint }) {
   const [news, setNews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const newsContainerRef = useRef(null); // Ref for the container holding news articles
-console.log(selectedCountry);
+  const newsContainerRef = useRef(null);
+
   useEffect(() => {
     fetchNews();
-  }, [currentPage, selectedCountry]);
+  }, [currentPage, selectedCountry, selectedEndpoint]);
 
   const fetchNews = async () => {
     try {
-      const response = await axios.get('https://newsapi.org/v2/top-headlines', {
-        params: {
-          country: selectedCountry,
-          apiKey: '733dd6a23cd246238ca1788a0112f088',
-          page: currentPage,
-          pageSize: 5 // Limit responses to 5 per page
-        }
+      let endpoint = selectedEndpoint; // Default endpoint
+      let params = {
+        apiKey: '733dd6a23cd246238ca1788a0112f088',
+        page: currentPage,
+        pageSize: 5
+      };
+
+      if (selectedEndpoint === 'sports') {
+        endpoint = 'everything';
+        params.q = 'sports';
+      } else if (selectedEndpoint === 'sources') {
+        endpoint = 'top-headlines/sources';
+      } else if (selectedEndpoint === 'country') {
+        params.country = selectedCountry;
+      }
+
+      const response = await axios.get(`https://newsapi.org/v2/${endpoint}`, {
+        params: params
       });
 
-      const filteredNews = response.data.articles.filter(article => article.urlToImage);
+      const filteredNews = response.data.articles
+        ? response.data.articles.filter(article => article.urlToImage)
+        : [];
+
       setNews(filteredNews);
 
-      // Scroll to the top of the news container after new content is loaded
       if (newsContainerRef.current) {
         newsContainerRef.current.scrollTop = 0;
       }

@@ -1,20 +1,34 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import NavScrollExample from './Navbar';
 import NewsComponent from './NewsComponent';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 function App() {
   const [selectedCountry, setSelectedCountry] = useState('in');
-  console.log('default country:', {selectedCountry});
+  const [selectedEndpoint, setSelectedEndpoint] = useState('top-headlines'); // Default endpoint
+console.log('selected country :', {selectedCountry});
+console.log('selected endpoint: ', {selectedEndpoint})
   const handleCountryChange = (newCountry) => {
-    console.log('Selected country changed:', newCountry);
     setSelectedCountry(newCountry);
   };
 
-  
+  const handleEndpointChange = (newEndpoint) => {
+    setSelectedEndpoint(newEndpoint);
+  };
+
   return (
-    <div>
-      <NavScrollExample onCountryChange={handleCountryChange} />
-      <NewsComponent selectedCountry={selectedCountry} />
-    </div>
+    <Router>
+      <div>
+        <NavScrollExample
+          onCountryChange={handleCountryChange}
+          onEndpointChange={handleEndpointChange}
+        />
+        <Routes>
+        <Route path={`/${selectedEndpoint}`} element={<NewsComponent selectedCountry={selectedCountry} />} />          
+          {/* Add more routes for different sections */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

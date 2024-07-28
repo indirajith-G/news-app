@@ -1,0 +1,26 @@
+.navbar{
+  background: black ;
+}
+
+.nav-link{
+  color:white !important;
+  font-weight: 500 !important;
+  font-size: 18px !important;
+}
+
+/* Styling for selected country */
+.selected-country {
+  color: green(115, 35, 194) !important;
+  font-size: 20px;
+  font-weight: bold !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+/* Styling for unselected country */
+.unselected-country {
+  color: orange !important;
+  font-size: 16px;
+  font-weight: 500 !important;
+  background-color: transparent;
+}
